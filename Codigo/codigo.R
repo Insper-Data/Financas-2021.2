@@ -1,3 +1,4 @@
+#########################################
 #Bibliotecas
 library(plyr)
 library(BatchGetSymbols)
