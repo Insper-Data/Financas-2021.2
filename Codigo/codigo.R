@@ -47,49 +47,50 @@
                                            auto.assign = FALSE)[,4])
 }
 
- portfolioReturns = na.omit(ROC(portfolioPrices))
  
  #--------------------------------------------------------------------------------------------
- # Tidying PortfolioPrices 
+ # Baixando retornos
  #-------------------------------------------------------------------------------------------- 
  
  portfolioPrices_tb <- data.frame(portfolioPrices)
-   
- 
- head(rownames(portfolioPrices_tb))
- class(rownames(portfolioPrices_tb))
  
  Index <- rownames(portfolioPrices_tb) %>% 
-   as.Date() 
+    as.Date() 
  
  portfolioPrices_tb <- rownames_to_column(portfolioPrices_tb, var = "Data") %>% as_tibble()
- portfolioPrices_tb
-
+ 
+ 
  portfolioPrices_tb <- portfolioPrices_tb %>% 
-   pivot_longer(cols = ABEV3.SA.Close:YDUQ3.SA.Close, names_to = "Ticker", values_to = "Preco_Fechamento")
-   
- portfolioPrices_tb <- portfolioPrices_tb %>%
-   separate(Ticker, into = c("Ticker", "Nada"), sep = ".Close", remove = FALSE) %>% 
-   select(Ticker, Data, Preco_Fechamento)
+    select(-'ASAI3.SA.Close')
+ 
+ 
+ portfolioReturns = na.omit(ROC(portfolioPrices_tb)) 
+ 
+ 
+ portfolioReturns_tb <- data.frame(portfolioReturns)
+ 
+ 
+ Index1 <- rownames(portfolioReturns_tb) %>% 
+    as.Date() 
+ 
+ portfolioReturns_tb <- rownames_to_column(portfolioReturns_tb, var = "Data") %>% as_tibble()
+ 
+ 
  
 
 
  #--------------------------------------------------------------------------------------------
- # Tidying PortfolioReturns 
+ # Tidying PortfolioReturns e PortfolioPrices
  #-------------------------------------------------------------------------------------------- 
    
-   
- portfolioReturns_tb <- data.frame(portfolioReturns)
  
+ portfolioPrices_tb <- portfolioPrices_tb %>% 
+    pivot_longer(cols = ABEV3.SA.Close:YDUQ3.SA.Close, names_to = "Ticker", values_to = "Preco_Fechamento")
  
- head(rownames(portfolioReturns_tb))
- class(rownames(portfolioReturns_tb))
+ portfolioPrices_tb <- portfolioPrices_tb %>%
+    separate(Ticker, into = c("Ticker", "Nada"), sep = ".Close", remove = FALSE) %>% 
+    select(Ticker, Data, Preco_Fechamento)
  
- Index1 <- rownames(portfolioReturns_tb) %>% 
-   as.Date() 
- 
- portfolioReturns_tb <- rownames_to_column(portfolioReturns_tb, var = "Data") %>% as_tibble()
- portfolioReturns_tb
  
  portfolioReturns_tb <- portfolioReturns_tb %>% 
    pivot_longer(cols = ABEV3.SA.Close:YDUQ3.SA.Close, names_to = "Ticker", values_to = "Retorno")
@@ -135,10 +136,10 @@ Database <- portfolioPrices_tb %>%
 # Baixando os dados das acoes no YAHOO
 #-------------------------------------------------------------------------------------------- 
 
- portfolioPrices = NULL
- for(ticker in cartIBRX) {
-   portfolioPrices = cbind(portfolioPrices,
-                           getSymbols.yahoo(ticker, from = di, to= df, periodicity = "daily", auto.assign = FALSE)[,4])
+ #portfolioPrices = NULL
+ #for(ticker in cartIBRX) {
+ # portfolioPrices = cbind(portfolioPrices,
+ #                         getSymbols.yahoo(ticker, from = di, to= df, periodicity = "daily", auto.assign = FALSE)[,4])
  } 
  
  
@@ -147,12 +148,12 @@ Database <- portfolioPrices_tb %>%
 
 # Criando matriz de correlacao dos retornos
 
- correl = cor(portfolioReturns)
+ #correl = cor(portfolioReturns)
 
 
 # Criando matriz de covariancia dos retornos
 
- covar = cov(portfolioReturns)
+ #covar = cov(portfolioReturns)
 
-##oi
+
 
