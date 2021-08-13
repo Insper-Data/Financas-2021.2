@@ -129,9 +129,29 @@ Database <- portfolioPrices_tb %>%
  scraping_ibrx50_SA = paste(scraping_ibrx50,".SA",sep = "")
  cartIBRX = scraping_ibrx50_SA
  
- cartIBRX = ibov$tickersSA 
+ cartIBRX = cartIBRX$tickersSA 
  
+ cartIBRX <- cartIBRX %>% 
+    data.frame() 
+ 
+ colnames(cartIBRX) <- "Ticker"
+ 
+ cartIBRX <- cartIBRX %>% 
+    mutate(IBRX50 = "Yes")
 
+ 
+ 
+ #--------------------------------------------------------------------------------------------
+ # Criando colunas para indicar IBOV e IBRX
+ #--------------------------------------------------------------------------------------------  
+ 
+ Database <- Database %>% 
+    full_join(cartIBRX, by = "Ticker") 
+ 
+ 
+ Database$IBRX50[which(is.na(Database$IBRX50))] <- "No"
+ 
+ 
 #--------------------------------------------------------------------------------------------
 # Baixando os dados das acoes no YAHOO
 #-------------------------------------------------------------------------------------------- 
@@ -140,7 +160,7 @@ Database <- portfolioPrices_tb %>%
  #for(ticker in cartIBRX) {
  # portfolioPrices = cbind(portfolioPrices,
  #                         getSymbols.yahoo(ticker, from = di, to= df, periodicity = "daily", auto.assign = FALSE)[,4])
- } 
+ #} 
  
  
 
