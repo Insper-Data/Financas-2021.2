@@ -154,5 +154,5 @@ Database <- portfolioPrices_tb %>%
 
  covar = cov(portfolioReturns)
 
-
+##oi
 
