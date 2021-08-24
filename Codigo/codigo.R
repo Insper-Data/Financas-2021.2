@@ -54,21 +54,17 @@
  
  portfolioPrices_tb <- data.frame(portfolioPrices)
  
+ portfolioPrices_tb <- portfolioPrices_tb %>% 
+   select(-'ASAI3.SA.Close')
+ 
+ portfolioReturns = na.omit(ROC(portfolioPrices_tb)) 
+ 
+ portfolioReturns_tb <- data.frame(portfolioReturns)
+ 
  Index <- rownames(portfolioPrices_tb) %>% 
     as.Date() 
  
  portfolioPrices_tb <- rownames_to_column(portfolioPrices_tb, var = "Data") %>% as_tibble()
- 
- 
- portfolioPrices_tb <- portfolioPrices_tb %>% 
-    select(-'ASAI3.SA.Close')
- 
- 
- portfolioReturns = na.omit(ROC(portfolioPrices_tb)) 
- 
- 
- portfolioReturns_tb <- data.frame(portfolioReturns)
- 
  
  Index1 <- rownames(portfolioReturns_tb) %>% 
     as.Date() 
@@ -176,4 +172,32 @@ Database <- portfolioPrices_tb %>%
  #covar = cov(portfolioReturns)
 
 
+#--------------------------------------------------------------------------------------------
+# Escrevendo um arquivo csv para Database
+#-------------------------------------------------------------------------------------------- 
+ 
+ write_csv(Database, "database.csv", append = F)
 
+ 
+#--------------------------------------------------------------------------------------------
+# Calculando distribuição de retornos
+#-------------------------------------------------------------------------------------------- 
+
+ 
+ retornos <- Database %>% 
+   filter(Ticker == "ABEV3.SA") %>% 
+   ggplot(aes(Retorno)) +
+   geom_histogram(aes(y = ..density..), bins = 10, colour = "navyblue", fill = "white") +
+   stat_function(fun = dnorm,
+                 args = list(
+                   mean = mean(Database$Retorno, na.rm = T),
+                   sd = sd(Database$Retorno, na.rm = T)),
+                 colour = "navyblue")+
+   xlab('Retorno') +
+   ylab('Frequência de Retorno') +
+   labs(title = 'Histograma (gráfico de frequências)') +
+   scale_x_continuous(breaks = c(-0.1, 0.05, 0, 0.05, 0.1)) +
+   theme_classic()
+ 
+retornos
+ 
