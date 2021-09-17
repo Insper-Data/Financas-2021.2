@@ -1,0 +1,50 @@
+---
+title: "Montagem de Carteiras"
+output: html_document
+---
+
+
+```{r}
+library(plyr)
+library(BatchGetSymbols)
+library(tidyquant)
+library(tidyverse)
+library(rvest)
+library(tidyr)
+library(quantmod)
+library(magrittr)
+library(ggplot2)
+
+#setwd("/Users/mariaclara/Documents/GitHub/Financas-2021.2")
+
+```
+
+
+# Teoria Moderna de Portfolio - Markowitz
+
+A Teoria Moderna de Portfolio ("MPT") teve origem em 1952 no chamado "Portfolio Selection" de Harry Markowitz. Em sua forma mais simples, o MPT fornece uma estrutura para construir e selecionar carteiras com base no desempenho esperado dos investimentos e no apetite de risco do investidor (Fabozzi, Gupta, & Markowitz, 2002).
+
+A Teoria de Seleção de Portfolio é uma teoria normativa, na qual descreve um padrão ou norma de comportamento que os investidores devem seguir ao construir uma carteira, em contraste com uma teoria que é realmente seguida. A Teoria de Precificação de Ativos, como o Modelo de Precificação de Ativos de Capital ("CAPM"), formaliza a relação que deveria existir entre os retornos dos ativos e o risco se os investidores construíssem e selecionassem carteiras de acordo com a análise de média-variância. Ja a Teoria de Precificação de Ativos é uma teoria positiva, assim um modelo que fornece o retorno esperado é derivado e chamado de Modelo de Precificação de Ativos (Fabozzi, Gupta, & Markowitz, 2002).
+
+Juntos, o MPT e a Teoria de Precificação de Ativos fornecem uma estrutura para especificar e medir o risco de investimento e para desenvolver relacionamentos entre o retorno esperado do ativo e o risco (Fabozzi, Gupta, & Markowitz, 2002).
+
+## Diversificação
+
+Segundo Markowitz, colocar todo o seu dinheiro em investimentos na qual os retornos são altamente correlacionados, não é um estrategia prudente. Isso, porque, um unico investimento mesmo com uma minima chance de quebrar, é muito provavel de que estando altamente correlacionado com os outros ativos, todos os outros podem quebrar, e assim, todo o portifolio quebra (Fabozzi, Gupta, & Markowitz, 2002).
+
+## Otimização de Média-Variância 
+
+A teoria determina que dadas as estimativas dos retornos, volatilidades e correlações de um conjunto de investimentos e restrições nas escolhas de investimento, é possível realizar uma otimização que resulte no risco/retorno ou fronteira eficiente de média-variância. Essa fronteira é eficiente porque subjacente a cada ponto dessa fronteira está uma carteira que resulta no maior retorno esperado possível para aquele nível de risco ou resulta no menor risco possível para aquele nível de retorno esperado. As carteiras que ficam na fronteira constituem o conjunto das carteiras eficientes (Fabozzi, Gupta, & Markowitz, 2002).
+
+Na análise de média-variância, a variância (desvio padrão) dos retornos é a medida proxy para o risco da carteira.
+
+## Classe de ativos Top-Down
+
+Na decisão de alocação de ativos, gestores realizam uma análise de alocação de ativos. Primeiro selecionam um conjunto de classes de ativos e para obter estimativas de retornos e volatilidades e correlações, geralmente começam com o desempenho histórico dos índices que representam essa classe. Essas estimativas são usadas como entradas na otimização da média-variância que resulta em uma fronteira eficiente.
+
+Porém, seria justo dizer que o uso de retornos históricos para estimar parâmetros que podem ser usados como entradas para obter o conjunto de carteiras eficientes depende se as economias subjacentes que dão origem aos resultados observados de retornos são fortes e estáveis. A força e a estabilidade das economias vêm da estabilidade política e da consistência nas políticas econômicas. É somente depois que uma economia tem um longo e comprovado registro de desempenho saudável e consistente sob várias forças (políticas e econômicas) que impactam os mercados livres que o desempenho histórico de seus mercados pode ser visto como um indicador justo de seu desempenho futuro.
+
+
+## Construção do portfolio 
+
+A aplicação da análise de média-variância para a construção da carteira requer o retorno esperado para cada título, variação dos retornos para cada título e covariância ou correção de retornos entre cada par de títulos.
